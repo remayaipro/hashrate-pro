@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HashRate Pro | Crypto Mining Profitability Calculator</title>
+  <meta name="description" content="Calculate real-time crypto mining profitability. Compare GPU and ASIC miners, estimate daily/monthly/yearly earnings after electricity costs.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛏️</text></svg>">
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <div class="header-inner">
+          <div class="logo">
+            <span class="logo-icon">⛏️</span>
+            <span class="logo-text">HashRate<span class="logo-pro">Pro</span></span>
+          </div>
+          <nav class="nav">
+            <a href="#calculator" class="nav-link active">Calculator</a>
+            <a href="#hardware" class="nav-link">Hardware</a>
+            <a href="#coins" class="nav-link">Coins</a>
+          </nav>
+          <div class="header-actions">
+            <span class="live-badge">
+              <span class="pulse"></span>
+              Live Prices
+            </span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container">
+        <h1>Crypto Mining <span class="gradient-text">Profitability</span> Calculator</h1>
+        <p>Real-time earnings estimates for GPU & ASIC miners. Know your profit before you mine.</p>
+      </div>
+    </section>
+
+    <!-- Live Prices Ticker -->
+    <section class="ticker">
+      <div class="container">
+        <div class="ticker-track" id="priceTicker">
+          <div class="ticker-item loading">Loading live prices...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Calculator -->
+    <section class="calculator-section" id="calculator">
+      <div class="container">
+        <div class="calc-grid">
+          <!-- Input Panel -->
+          <div class="calc-card input-panel">
+            <h2>⚙️ Mining Setup</h2>
+            
+            <div class="form-group">
+              <label>Mining Method</label>
+              <div class="toggle-group">
+                <button class="toggle-btn active" data-method="gpu" onclick="setMethod('gpu')">🖥️ GPU</button>
+                <button class="toggle-btn" data-method="asic" onclick="setMethod('asic')">🔧 ASIC</button>
+              </div>
+            </div>
+
+            <!-- GPU Selection -->
+            <div id="gpuSection">
+              <div class="form-group">
+                <label>GPU Model</label>
+                <select id="gpuSelect" onchange="updateHashrate()">
+                  <option value="">Select your GPU...</option>
+                  <optgroup label="NVIDIA RTX 40 Series">
+                    <option value="4090" data-hashrate="130" data-power="350">RTX 4090 (130 MH/s)</option>
+                    <option value="4080" data-hashrate="100" data-power="300">RTX 4080 (100 MH/s)</option>
+                    <option value="4070ti" data-hashrate="75" data-power="250">RTX 4070 Ti (75 MH/s)</option>
+                    <option value="4070" data-hashrate="60" data-power="220">RTX 4070 (60 MH/s)</option>
+                    <option value="4060ti" data-hashrate="45" data-power="160">RTX 4060 Ti (45 MH/s)</option>
+                  </optgroup>
+                  <optgroup label="NVIDIA RTX 30 Series">
+                    <option value="3090" data-hashrate="120" data-power="350">RTX 3090 (120 MH/s)</option>
+                    <option value="3080" data-hashrate="100" data-power="320">RTX 3080 (100 MH/s)</option>
+                    <option value="3070" data-hashrate="62" data-power="220">RTX 3070 (62 MH/s)</option>
+                    <option value="3060ti" data-hashrate="60" data-power="200">RTX 3060 Ti (60 MH/s)</option>
+                    <option value="3060" data-hashrate="48" data-power="170">RTX 3060 (48 MH/s)</option>
+                  </optgroup>
+                  <optgroup label="AMD RX 7000 Series">
+                    <option value="7900xtx" data-hashrate="115" data-power="355">RX 7900 XTX (115 MH/s)</option>
+                    <option value="7900xt" data-hashrate="100" data-power="315">RX 7900 XT (100 MH/s)</option>
+                    <option value="7800xt" data-hashrate="70" data-power="263">RX 7800 XT (70 MH/s)</option>
+                  </optgroup>
+                  <optgroup label="AMD RX 6000 Series">
+                    <option value="6800xt" data-hashrate="64" data-power="300">RX 6800 XT (64 MH/s)</option>
+                    <option value="6700xt" data-hashrate="48" data-power="230">RX 6700 XT (48 MH/s)</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Number of GPUs</label>
+                <input type="number" id="gpuCount" value="1" min="1" max="100" onchange="recalculate()">
+              </div>
+            </div>
+
+            <!-- ASIC Selection -->
+            <div id="asicSection" style="display:none;">
+              <div class="form-group">
+                <label>ASIC Miner</label>
+                <select id="asicSelect" onchange="updateHashrate()">
+                  <option value="">Select ASIC miner...</option>
+                  <optgroup label="Bitmain Antminer">
+                    <option value="s21xp" data-hashrate="270" data-power="3645" data-algo="sha256">Antminer S21 XP (270 TH/s)</option>
+                    <option value="s21pro" data-hashrate="234" data-power="3510" data-algo="sha256">Antminer S21 Pro (234 TH/s)</option>
+                    <option value="s21" data-hashrate="200" data-power="3500" data-algo="sha256">Antminer S21 (200 TH/s)</option>
+                    <option value="l9" data-hashrate="17" data-power="3570" data-algo="scrypt">Antminer L9 DOGE/LTC (17 GH/s)</option>
+                    <option value="ks5pro" data-hashrate="21" data-power="3150" data-algo="kheavyhash">Antminer KS5 Pro KAS (21 TH/s)</option>
+                  </optgroup>
+                  <optgroup label="MicroBT WhatsMiner">
+                    <option value="m66s" data-hashrate="298" data-power="5580" data-algo="sha256">WhatsMiner M66S (298 TH/s)</option>
+                    <option value="m60s" data-hashrate="186" data-power="3420" data-algo="sha256">WhatsMiner M60S (186 TH/s)</option>
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+
+            <!-- Coin Selection -->
+            <div class="form-group">
+              <label>Mining Target</label>
+              <select id="coinSelect" onchange="recalculate()">
+                <option value="btc">Bitcoin (BTC) - SHA256</option>
+                <option value="ltc">Litecoin (LTC) - Scrypt</option>
+                <option value="doge">Dogecoin (DOGE) - Scrypt</option>
+                <option value="kas">Kaspa (KAS) - kHeavyHash</option>
+                <option value="etc">Ethereum Classic (ETC) - ETCHash</option>
+                <option value="xmr">Monero (XMR) - RandomX</option>
+                <option value="rvn">Ravencoin (RVN) - KawPow</option>
+                <option value="ergo">Ergo (ERG) - Autolykos</option>
+              </select>
+            </div>
+
+            <!-- Electricity -->
+            <div class="form-group">
+              <label>Electricity Cost (USD/kWh)</label>
+              <div class="input-with-icon">
+                <span class="input-icon">⚡</span>
+                <input type="number" id="electricityCost" value="0.12" step="0.01" min="0" max="1" onchange="recalculate()">
+              </div>
+              <div class="input-hint">US average: $0.12 | EU average: $0.25 | Check your bill</div>
+            </div>
+
+            <!-- Custom Hashrate Override -->
+            <details class="advanced-section">
+              <summary>Advanced Settings</summary>
+              <div class="form-group">
+                <label>Custom Hashrate (override)</label>
+                <input type="number" id="customHashrate" placeholder="Leave empty to use preset" onchange="recalculate()">
+              </div>
+              <div class="form-group">
+                <label>Custom Power Draw (watts)</label>
+                <input type="number" id="customPower" placeholder="Leave empty to use preset" onchange="recalculate()">
+              </div>
+              <div class="form-group">
+                <label>Pool Fee (%)</label>
+                <input type="number" id="poolFee" value="1" step="0.1" min="0" max="10" onchange="recalculate()">
+              </div>
+            </details>
+          </div>
+
+          <!-- Results Panel -->
+          <div class="calc-card results-panel">
+            <h2>📊 Profitability Results</h2>
+            
+            <div class="results-main">
+              <div class="profit-highlight" id="dailyProfit">
+                <div class="profit-label">Daily Profit</div>
+                <div class="profit-value positive">$0.00</div>
+              </div>
+            </div>
+
+            <div class="results-grid">
+              <div class="result-item">
+                <span class="result-label">Daily Revenue</span>
+                <span class="result-value" id="dailyRevenue">$0.00</span>
+              </div>
+              <div class="result-item">
+                <span class="result-label">Daily Electricity</span>
+                <span class="result-value cost" id="dailyElec">$0.00</span>
+              </div>
+              <div class="result-item">
+                <span class="result-label">Monthly Profit</span>
+                <span class="result-value" id="monthlyProfit">$0.00</span>
+              </div>
+              <div class="result-item">
+                <span class="result-label">Yearly Profit</span>
+                <span class="result-value" id="yearlyProfit">$0.00</span>
+              </div>
+              <div class="result-item">
+                <span class="result-label">Coins Mined/Day</span>
+                <span class="result-value" id="coinsPerDay">0</span>
+              </div>
+              <div class="result-item">
+                <span class="result-label">Break-Even (days)</span>
+                <span class="result-value" id="breakEven">—</span>
+              </div>
+            </div>
+
+            <div class="breakdown-bar">
+              <div class="bar-revenue" id="barRevenue" style="width:50%">
+                <span>Revenue</span>
+              </div>
+              <div class="bar-cost" id="barCost" style="width:50%">
+                <span>Electricity</span>
+              </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="cta-box">
+              <p>💡 <strong>Start mining in 5 minutes</strong> with NiceHash — auto-selects the most profitable coin for your hardware.</p>
+              <a href="https://www.nicehash.com/?refby=RHRPRO" target="_blank" class="cta-btn primary" rel="sponsored">
+                Start Mining with NiceHash →
+              </a>
+              <a href="https://www.kryptex.com/?ref=a8b46154" target="_blank" class="cta-btn secondary" rel="sponsored">
+                Try Kryptex (Beginner Friendly)
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hardware Comparison -->
+    <section class="hardware-section" id="hardware">
+      <div class="container">
+        <h2>🔧 Top Mining Hardware Comparison</h2>
+        <div class="table-wrap">
+          <table class="hardware-table" id="hardwareTable">
+            <thead>
+              <tr>
+                <th>Miner</th>
+                <th>Hashrate</th>
+                <th>Power</th>
+                <th>Efficiency</th>
+                <th>Est. Daily Profit</th>
+                <th>Price Range</th>
+              </tr>
+            </thead>
+            <tbody id="hardwareBody">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Coin Stats -->
+    <section class="coins-section" id="coins">
+      <div class="container">
+        <h2>💰 Mineable Coins Live Data</h2>
+        <div class="coin-grid" id="coinGrid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+      <div class="container">
+        <h2>❓ Frequently Asked Questions</h2>
+        <div class="faq-grid">
+          <div class="faq-item">
+            <h3>Is crypto mining still profitable in 2026?</h3>
+            <p>Yes, but margins are tight. Profitability depends on your electricity cost, hardware efficiency, and chosen coin. GPU miners with $0.08/kWh or lower power costs can still profit on altcoins.</p>
+          </div>
+          <div class="faq-item">
+            <h3>What's the best GPU for mining?</h3>
+            <p>The RTX 4070 offers the best efficiency-to-price ratio. For maximum hashrate, the RTX 4090 leads but has higher upfront cost. AMD RX 7900 XTX is competitive for certain algorithms.</p>
+          </div>
+          <div class="faq-item">
+            <h3>How do I start mining?</h3>
+            <p>1) Choose your hardware. 2) Download mining software (NiceHash QuickMiner for beginners). 3) Create a wallet. 4) Join a pool. 5) Start earning. Our calculator helps you pick the right coin.</p>
+          </div>
+          <div class="faq-item">
+            <h3>What about electricity costs?</h3>
+            <p>Electricity is 60-80% of mining costs. Miners paying above $0.10/kWh should focus on the most efficient coins. Consider solar or off-peak rates to improve margins.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <span class="logo-icon">⛏️</span>
+            <span class="logo-text">HashRate<span class="logo-pro">Pro</span></span>
+            <p>Real-time mining profitability calculations.</p>
+          </div>
+          <div class="footer-links">
+            <a href="#calculator">Calculator</a>
+            <a href="#hardware">Hardware</a>
+            <a href="#coins">Coins</a>
+          </div>
+          <div class="footer-disclaimer">
+            <p>Prices update every 60s. Estimates are approximate. Not financial advice. Affiliate links help keep this tool free.</p>
+            <p>&copy; 2026 HashRate Pro. Built with ⛏️</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
