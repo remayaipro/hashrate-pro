@@ -9,6 +9,75 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛏️</text></svg>">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="HashRate Pro - Crypto Mining Profitability Calculator">
+  <meta property="og:description" content="Calculate real-time crypto mining profitability. Compare GPU and ASIC miners, estimate daily/monthly/yearly earnings after electricity costs.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://hashrate-pro.pages.dev">
+  <meta property="og:image" content="https://hashrate-pro.pages.dev/og-image.png">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HashRate Pro - Mining Calculator">
+  <meta name="twitter:description" content="Real-time crypto mining profitability calculator for GPU & ASIC miners.">
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "HashRate Pro",
+    "description": "Crypto mining profitability calculator for GPU and ASIC miners with live prices",
+    "url": "https://hashrate-pro.pages.dev",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "Real-time crypto prices",
+      "GPU mining calculator",
+      "ASIC mining calculator",
+      "Hardware comparison",
+      "Profitability estimates"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is crypto mining still profitable in 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, but margins are tight. Profitability depends on electricity cost, hardware efficiency, and chosen coin. GPU miners with $0.08/kWh or lower can profit on altcoins."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the best GPU for mining in 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The RTX 4070 offers the best efficiency-to-price ratio. For maximum hashrate, the RTX 4090 leads but costs more. AMD RX 7900 XTX is competitive for certain algorithms."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much does it cost to mine one Bitcoin in 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The all-in cost to mine one Bitcoin in 2026 ranges from $38,000 to $92,000 depending on electricity rates and hardware. Electricity accounts for 60-80% of total mining costs."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <div class="app">
@@ -24,6 +93,7 @@
             <a href="#calculator" class="nav-link active">Calculator</a>
             <a href="#hardware" class="nav-link">Hardware</a>
             <a href="#coins" class="nav-link">Coins</a>
+            <a href="/blog/" class="nav-link">Blog</a>
           </nav>
           <div class="header-actions">
             <span class="live-badge">

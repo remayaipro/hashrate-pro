@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hashrate-pro.pages.dev/sitemap.xml
